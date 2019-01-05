@@ -102,12 +102,12 @@ namespace TrackManagement
 
             foreach (ZipArchiveEntry entry in archive.Entries)
             {
-                if (entry.FullName.EndsWith(databaseExt, StringComparison.OrdinalIgnoreCase))
+                if (entry.Name.EndsWith(databaseExt, StringComparison.OrdinalIgnoreCase))
                 {
                     if (track.TrackType == TrackType.Unknown)
                     {
-                        track.TrackType = GetTrackType(entry.FullName);
-                        track.SlotNumber = GetSlot(entry.FullName);
+                        track.TrackType = GetTrackType(entry.Name);
+                        track.SlotNumber = GetSlot(entry.Name);
                     }
                     ++databaseCount;
                     if(databaseCount == 1)
@@ -115,7 +115,7 @@ namespace TrackManagement
                         zipHandler(entry);
                     }
                 }
-                else if (entry.FullName.EndsWith(levelExt, StringComparison.OrdinalIgnoreCase))
+                else if (entry.Name.EndsWith(levelExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++levelCount;
                     if (levelCount == 1)
@@ -123,7 +123,7 @@ namespace TrackManagement
                         zipHandler(entry);
                     }
                 }
-                else if (entry.FullName.EndsWith(packageExt, StringComparison.OrdinalIgnoreCase))
+                else if (entry.Name.EndsWith(packageExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++packageCount;
                     if (packageCount == 1)
@@ -131,7 +131,7 @@ namespace TrackManagement
                         zipHandler(entry);
                     }
                 }
-                else if (entry.FullName.EndsWith(sceneExt, StringComparison.OrdinalIgnoreCase))
+                else if (entry.Name.EndsWith(sceneExt, StringComparison.OrdinalIgnoreCase))
                 {
                     ++sceneCount;
                     if (sceneCount == 1)
