@@ -8,7 +8,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace TrackManagement
+namespace ReflexUtility
 {
     public class ReflexCentralParser : HtmlParser
     {
@@ -71,8 +71,8 @@ namespace TrackManagement
                         hours = 0;
                     }
 
-                    DateTime dateTime = new DateTime(year, month, day, hours, min, 0);
-                    uploadTimestamp = (long)(dateTime.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                    DateTime dateTime = new DateTime(year, month, day, hours, min, 0, DateTimeKind.Utc);
+                    uploadTimestamp = (long)(dateTime.Subtract(new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc))).TotalSeconds;
                 }
             }
 

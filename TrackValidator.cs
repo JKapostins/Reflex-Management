@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 
-namespace TrackManagement
+namespace ReflexUtility
 {
     public delegate void ZipFileEntryDelegate(ZipArchiveEntry entry);
 
@@ -16,6 +16,23 @@ namespace TrackManagement
             if (ext == ".zip")
             {
                 track = PeekZipFile(track.SourceTrackUrl, track, zipHandler);
+            }
+            else
+            {
+                track.ErrorInfo += string.Format("Expected .zip file, got {0} file; ", ext);
+                track.Valid = false;
+            }
+
+            return track;
+        }
+
+        public Track ValidateLocalTrack(string fileName, Track track, ZipFileEntryDelegate zipHandler)
+        {
+            string ext = Path.GetExtension(fileName);
+            //We can only run automation on zip files. .rar is a closed format and not accepted.
+            if (ext == ".zip")
+            {
+                track = PeekLocalZipFile(fileName, track, zipHandler);
             }
             else
             {
@@ -82,6 +99,19 @@ namespace TrackManagement
                     {
                         track = ValidateZipArchive(archive, track, zipHandler);
                     }
+                }
+            }
+
+            return track;
+        }
+
+        private Track PeekLocalZipFile(string fileName, Track track, ZipFileEntryDelegate zipHandler)
+        {
+            using (WebClient client = new WebClient())
+            {
+                using (ZipArchive archive = ZipFile.OpenRead(fileName))
+                {
+                    track = ValidateZipArchive(archive, track, zipHandler);
                 }
             }
 

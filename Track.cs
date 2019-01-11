@@ -1,6 +1,8 @@
 ﻿using System;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 
-namespace TrackManagement
+namespace ReflexUtility
 {
     public class TrackType
     {
@@ -10,11 +12,12 @@ namespace TrackManagement
         public const string Unknown = "Unknown";
     }
 
+    [DynamoDBTable("ReflexTracks")]
     public class Track
     {
         public Track()
         {
-            TrackType = TrackManagement.TrackType.Unknown;
+            TrackType = ReflexUtility.TrackType.Unknown;
             TrackName = string.Empty;
             TrackUrl = string.Empty;
             ThumbnailUrl = string.Empty;
@@ -29,11 +32,12 @@ namespace TrackManagement
         }
 
         public string TrackType { get; set; }
+        [DynamoDBHashKey]
         public string TrackName { get; set; }
         public string TrackUrl { get; set; }
         public string ThumbnailUrl { get; set; }
         public string SourceTrackUrl { get; set; }
-        public string SourceThumbnailUrl { get; set; }        
+        public string SourceThumbnailUrl { get; set; }
         public string Author { get; set; }
         public string ErrorInfo { get; set; }
         public long CreationTime { get; set; }

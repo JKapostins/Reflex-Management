@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TrackManagement
+namespace ReflexUtility
 {
     public abstract class HtmlParser
     {
