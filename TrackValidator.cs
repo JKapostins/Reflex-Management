@@ -9,6 +9,8 @@ namespace ReflexUtility
 
     public class TrackValidator
     {
+        public const int SlotCount = 8;
+
         public Track ValidateTrack(Track track, ZipFileEntryDelegate zipHandler)
         {
             string ext = Path.GetExtension(track.SourceTrackUrl);
@@ -43,10 +45,10 @@ namespace ReflexUtility
             return track;
         }
 
-        private string GetTrackType(string fileName)
+        public static string GetTrackType(string fileName)
         {
             var type = TrackType.Unknown;
-            for (int i = 0; i < 8; ++i)
+            for (int i = 0; i < SlotCount; ++i)
             {
                 string nationalPattern = string.Format("Beta_Nat_Track", i+1);
                 string supercrossPattern = string.Format("Beta_Sx_Track", i + 1);
@@ -72,11 +74,10 @@ namespace ReflexUtility
             return type;
         }
 
-        private int GetSlot(string fileName)
+        public static int GetSlot(string fileName)
         {
             int slot = 0;
-            const int MaxSlots = 7;
-            for(int i = 0; i < MaxSlots; ++i)
+            for(int i = 0; i < SlotCount; ++i)
             {
                 string format = string.Format("Slot_{0}.dx9", i + 1);
                 if(fileName.Contains(format))
@@ -107,12 +108,9 @@ namespace ReflexUtility
 
         private Track PeekLocalZipFile(string fileName, Track track, ZipFileEntryDelegate zipHandler)
         {
-            using (WebClient client = new WebClient())
+            using (ZipArchive archive = ZipFile.OpenRead(fileName))
             {
-                using (ZipArchive archive = ZipFile.OpenRead(fileName))
-                {
-                    track = ValidateZipArchive(archive, track, zipHandler);
-                }
+                track = ValidateZipArchive(archive, track, zipHandler);
             }
 
             return track;
