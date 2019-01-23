@@ -71,7 +71,7 @@ namespace ReflexUtility
             if (tracks.Count > 0)
             {
                 context.Logger.LogLine("Pulling list of current tracks from our databse.");
-                var existingTrackNames = HttpUtility.Get<string[]>("https://spptqssmj8.execute-api.us-east-1.amazonaws.com/test/tracknames");
+                var existingTrackNames = TrackDataUtility.GetThirdPartyTrackNames();
                 var newTracks = tracks.Where(t => existingTrackNames.Any(e => e == t.TrackName) == false).ToArray();
 
                 context.Logger.LogLine("Pulling list of current tracks from our databse.");
